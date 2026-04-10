@@ -298,10 +298,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
     <a class="nav-link" href="../../about.html"> 
-<span class="menu-text">About</span></a>
+<span class="menu-text">About Me</span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/mattwaite"> <i class="bi bi-github" role="img">
+    <a class="nav-link" href="https://github.com/sydneyschmitz"> <i class="bi bi-github" role="img">
 </i> 
 <span class="menu-text"></span></a>
   </li>  
@@ -364,310 +364,221 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
-<p>For about two decades, men’s tennis was defined by three names: Rafael Nadal, Roger Federer and Novak Djokovic. But a new generation is here with Carlos Alcaraz and Jannik Sinner dominating the ATP ranks as the torch gets passed.</p>
-<p>These two players are quite comparable:</p>
+<p>For nearly two decades, men’s tennis was defined by three names — Rafael Nadal, Roger Federer, and Novak Djokovic. But as that era begins to fade, a new rivalry is taking center stage in the ATP.</p>
+<p>The 2025 French Open wasn’t just any other Grand Slam. The championship match between Carlos Alcaraz and Jannik Sinner solidified their dominance as the new top two. Alcaraz shockingly came back from being down two sets to beat Sinner in a five-hour, 30-minute-long marathon of a match, one of the longest in the modern era. This match was a full on display of Sinner’s mental resilience and consistency from the baseline, while showcasing the physical endurance and hard-hitting swings from Alcaraz.</p>
+<p>Despite their opposing playstyles, these two are quite comparable:</p>
 <p>They both turned pro in 2018 at the ages of 14 (Alcaraz) and 16 (Sinner). Their current ATP tour ranks are No.&nbsp;1 (Alcaraz) and No.&nbsp;2 (Sinner). Even their head-to-head record is tight, with Alcaraz winning 10 of 16 total matchups.</p>
-<p>Whenever Alcaraz and Sinner face off, it almost guarantees a high-level, competitive match, often stretching to all five sets and lasting for hours, showcasing both players’ endurance and mental resilience.</p>
 <p>But beyond the excitement of their head-to-head rivalry, who is the more complete player overall?</p>
-<p>To start, we’ll take a look at their performance against other top ranking players.</p>
+<p>To start, we’ll take a look at their performance against other top-ranking ATP players.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>all_matches <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">read_csv</span>(<span class="st">"atp_matches_2020.csv"</span>),</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">read_csv</span>(<span class="st">"atp_matches_2021.csv"</span>),</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">read_csv</span>(<span class="st">"atp_matches_2022.csv"</span>),</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">read_csv</span>(<span class="st">"atp_matches_2023.csv"</span>),</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">read_csv</span>(<span class="st">"atp_matches_2024.csv"</span>))</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>players <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Carlos Alcaraz"</span>, <span class="st">"Jannik Sinner"</span>)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>rank_tiers <span class="ot">&lt;-</span> all_matches <span class="sc">%&gt;%</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(winner_name <span class="sc">%in%</span> players <span class="sc">|</span> loser_name <span class="sc">%in%</span> players) <span class="sc">%&gt;%</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">player =</span> <span class="fu">case_when</span>(</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    winner_name <span class="sc">%in%</span> players <span class="sc">~</span> winner_name,</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    loser_name <span class="sc">%in%</span> players <span class="sc">~</span> loser_name</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">opponent_rank =</span> <span class="fu">case_when</span>(</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>    winner_name <span class="sc">==</span> player <span class="sc">~</span> loser_rank,</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    loser_name <span class="sc">==</span> player <span class="sc">~</span> winner_rank</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">win =</span> <span class="fu">ifelse</span>(winner_name <span class="sc">==</span> player, <span class="dv">1</span>, <span class="dv">0</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(opponent_rank)) <span class="sc">%&gt;%</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">rank_group =</span> <span class="fu">case_when</span>(</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>    opponent_rank <span class="sc">&lt;=</span> <span class="dv">10</span> <span class="sc">~</span> <span class="st">"Top 10"</span>,</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>    opponent_rank <span class="sc">&lt;=</span> <span class="dv">20</span> <span class="sc">~</span> <span class="st">"11–20"</span>,</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>    opponent_rank <span class="sc">&lt;=</span> <span class="dv">50</span> <span class="sc">~</span> <span class="st">"21–50"</span>,</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>    <span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">"50+"</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>  )) <span class="sc">|&gt;</span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">rank_group =</span> <span class="fu">factor</span>(rank_group,</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>  <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Top 10"</span>, <span class="st">"11–20"</span>, <span class="st">"21–50"</span>, <span class="st">"50+"</span>)</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>)) <span class="sc">|&gt;</span></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(player, rank_group) <span class="sc">%&gt;%</span></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">win_pct =</span> <span class="fu">mean</span>(win), <span class="at">.groups =</span> <span class="st">"drop"</span>)</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(rank_tiers, <span class="fu">aes</span>(<span class="at">x =</span> rank_group, <span class="at">y =</span> win_pct, <span class="at">fill =</span> player)) <span class="sc">+</span></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">position =</span> <span class="st">"dodge"</span>) <span class="sc">+</span></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Carlos Alcaraz"</span> <span class="ot">=</span> <span class="st">"#EEDC82"</span>,</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Jannik Sinner"</span> <span class="ot">=</span> <span class="st">"#4F7942"</span></span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>  )) <span class="sc">+</span></span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">percent_format</span>()) <span class="sc">+</span></span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Alcaraz and Sinner Compete Among the ATP Elite"</span>,</span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"How each player performs as competition level changes"</span>,</span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">"Source: JeffSackmann | By Sydney Schmitz"</span>,</span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Opponent Ranking Tier"</span>,</span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Win Percentage"</span></span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()<span class="sc">+</span></span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">size =</span> <span class="dv">14</span>)</span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell-output cell-output-stderr">
-<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
-✔ dplyr     1.2.0     ✔ readr     2.1.6
-✔ forcats   1.0.1     ✔ stringr   1.6.0
-✔ ggplot2   4.0.2     ✔ tibble    3.3.1
-✔ lubridate 1.9.4     ✔ tidyr     1.3.2
-✔ purrr     1.2.1     
-── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-✖ dplyr::filter() masks stats::filter()
-✖ dplyr::lag()    masks stats::lag()
-ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
 </div>
 </div>
+</div>
+<p>Both Alcaraz and Sinner show strong win percentages against opponents ranked outside the top 50, which is expected for these two top-tier players. However, against top 20 opponents, Alcaraz separates himself slightly by maintaining a higher win percentage. It is crucial to consider opponent rank to understand the context of the match. Here, Alcaraz seems to be the one with a stronger ability to compete against the current best at a more consistent level, showing his ability to elevate performance in high-pressure situations and must-win matches.</p>
+<p>Another important aspect in determining the most complete player is consistency across different court surfaces.</p>
+<p>Professional tennis is unique in that it is not played on a standardized surface. While other sports, like baseball and soccer, allow for variations in field dimensions, no sport is as directly influenced by its playing surface as tennis, where the most subtle of differences between clay, grass and hard courts can dramatically shape playing style and match outcomes.</p>
+<p>Let’s take a look at how well Alcaraz and Sinner play on the three surfaces.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read_csv</span>(<span class="st">"atp_matches_2020.csv"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>surface_data <span class="ot">&lt;-</span> all_matches <span class="sc">|&gt;</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(winner_name <span class="sc">%in%</span> players <span class="sc">|</span> loser_name <span class="sc">%in%</span> players) <span class="sc">|&gt;</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">player =</span> <span class="fu">case_when</span>(</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    winner_name <span class="sc">%in%</span> players <span class="sc">~</span> winner_name,</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    loser_name <span class="sc">%in%</span> players <span class="sc">~</span> loser_name</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">win =</span> <span class="fu">ifelse</span>(winner_name <span class="sc">==</span> player, <span class="dv">1</span>, <span class="dv">0</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(player, surface) <span class="sc">|&gt;</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">win_pct =</span> <span class="fu">mean</span>(win), <span class="at">.groups =</span> <span class="st">"drop"</span>)</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>surface_data<span class="sc">$</span>surface <span class="ot">&lt;-</span> <span class="fu">factor</span>(surface_data<span class="sc">$</span>surface,</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>                               <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Clay"</span>, <span class="st">"Grass"</span>, <span class="st">"Hard"</span>))</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(surface_data, <span class="fu">aes</span>(<span class="at">x =</span> surface, <span class="at">y =</span> win_pct, <span class="at">group =</span> player, <span class="at">color =</span> player)) <span class="sc">+</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="fl">1.2</span>) <span class="sc">+</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Carlos Alcaraz"</span> <span class="ot">=</span> <span class="st">"#EEDC82"</span>,</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Jannik Sinner"</span> <span class="ot">=</span> <span class="st">"#4F7942"</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>  )) <span class="sc">+</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">percent_format</span>()) <span class="sc">+</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Sinner Dominates the Hard Court, Alcaraz Remains Versatile"</span>,</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Comparing surface performance between Alcaraz and Sinner"</span>,</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">"Source: Jeff Sackmann | By Sydney Schmitz"</span>,</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Surface"</span>,</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Win Percentage"</span></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">size =</span> <span class="dv">14</span>),</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.title =</span> <span class="fu">element_blank</span>()</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell-output cell-output-stderr">
-<pre><code>Rows: 1462 Columns: 49
-── Column specification ────────────────────────────────────────────────────────
-Delimiter: ","
-chr (14): tourney_id, tourney_name, surface, tourney_level, winner_entry, wi...
-dbl (35): draw_size, tourney_date, match_num, winner_id, winner_seed, winner...
-
-ℹ Use `spec()` to retrieve the full column specification for this data.
-ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 1,462 × 49
-   tourney_id tourney_name surface draw_size tourney_level tourney_date
-   &lt;chr&gt;      &lt;chr&gt;        &lt;chr&gt;       &lt;dbl&gt; &lt;chr&gt;                &lt;dbl&gt;
- 1 2020-8888  Atp Cup      Hard           24 A                 20200106
- 2 2020-8888  Atp Cup      Hard           24 A                 20200106
- 3 2020-8888  Atp Cup      Hard           24 A                 20200106
- 4 2020-8888  Atp Cup      Hard           24 A                 20200106
- 5 2020-8888  Atp Cup      Hard           24 A                 20200106
- 6 2020-8888  Atp Cup      Hard           24 A                 20200106
- 7 2020-8888  Atp Cup      Hard           24 A                 20200106
- 8 2020-8888  Atp Cup      Hard           24 A                 20200106
- 9 2020-8888  Atp Cup      Hard           24 A                 20200106
-10 2020-8888  Atp Cup      Hard           24 A                 20200106
-# ℹ 1,452 more rows
-# ℹ 43 more variables: match_num &lt;dbl&gt;, winner_id &lt;dbl&gt;, winner_seed &lt;dbl&gt;,
-#   winner_entry &lt;chr&gt;, winner_name &lt;chr&gt;, winner_hand &lt;chr&gt;, winner_ht &lt;dbl&gt;,
-#   winner_ioc &lt;chr&gt;, winner_age &lt;dbl&gt;, loser_id &lt;dbl&gt;, loser_seed &lt;dbl&gt;,
-#   loser_entry &lt;chr&gt;, loser_name &lt;chr&gt;, loser_hand &lt;chr&gt;, loser_ht &lt;dbl&gt;,
-#   loser_ioc &lt;chr&gt;, loser_age &lt;dbl&gt;, score &lt;chr&gt;, best_of &lt;dbl&gt;, round &lt;chr&gt;,
-#   minutes &lt;dbl&gt;, w_ace &lt;dbl&gt;, w_df &lt;dbl&gt;, w_svpt &lt;dbl&gt;, w_1stIn &lt;dbl&gt;, …</code></pre>
-</div>
-<details class="code-fold">
-<summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read_csv</span>(<span class="st">"atp_matches_2021.csv"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-<div class="cell-output cell-output-stderr">
-<pre><code>Rows: 2733 Columns: 49
-── Column specification ────────────────────────────────────────────────────────
-Delimiter: ","
-chr (14): tourney_id, tourney_name, surface, tourney_level, winner_entry, wi...
-dbl (35): draw_size, tourney_date, match_num, winner_id, winner_seed, winner...
-
-ℹ Use `spec()` to retrieve the full column specification for this data.
-ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 2,733 × 49
-   tourney_id tourney_name   surface draw_size tourney_level tourney_date
-   &lt;chr&gt;      &lt;chr&gt;          &lt;chr&gt;       &lt;dbl&gt; &lt;chr&gt;                &lt;dbl&gt;
- 1 2021-0096  Tokyo Olympics Hard           64 A                 20210724
- 2 2021-0096  Tokyo Olympics Hard           64 A                 20210724
- 3 2021-0096  Tokyo Olympics Hard           64 A                 20210724
- 4 2021-0096  Tokyo Olympics Hard           64 A                 20210724
- 5 2021-0096  Tokyo Olympics Hard           64 A                 20210724
- 6 2021-0096  Tokyo Olympics Hard           64 A                 20210724
- 7 2021-0096  Tokyo Olympics Hard           64 A                 20210724
- 8 2021-0096  Tokyo Olympics Hard           64 A                 20210724
- 9 2021-0096  Tokyo Olympics Hard           64 A                 20210724
-10 2021-0096  Tokyo Olympics Hard           64 A                 20210724
-# ℹ 2,723 more rows
-# ℹ 43 more variables: match_num &lt;dbl&gt;, winner_id &lt;dbl&gt;, winner_seed &lt;dbl&gt;,
-#   winner_entry &lt;chr&gt;, winner_name &lt;chr&gt;, winner_hand &lt;chr&gt;, winner_ht &lt;dbl&gt;,
-#   winner_ioc &lt;chr&gt;, winner_age &lt;dbl&gt;, loser_id &lt;dbl&gt;, loser_seed &lt;dbl&gt;,
-#   loser_entry &lt;chr&gt;, loser_name &lt;chr&gt;, loser_hand &lt;chr&gt;, loser_ht &lt;dbl&gt;,
-#   loser_ioc &lt;chr&gt;, loser_age &lt;dbl&gt;, score &lt;chr&gt;, best_of &lt;dbl&gt;, round &lt;chr&gt;,
-#   minutes &lt;dbl&gt;, w_ace &lt;dbl&gt;, w_df &lt;dbl&gt;, w_svpt &lt;dbl&gt;, w_1stIn &lt;dbl&gt;, …</code></pre>
-</div>
-<details class="code-fold">
-<summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read_csv</span>(<span class="st">"atp_matches_2022.csv"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-<div class="cell-output cell-output-stderr">
-<pre><code>Rows: 2917 Columns: 49
-── Column specification ────────────────────────────────────────────────────────
-Delimiter: ","
-chr (14): tourney_id, tourney_name, surface, tourney_level, winner_entry, wi...
-dbl (35): draw_size, tourney_date, match_num, winner_id, winner_seed, winner...
-
-ℹ Use `spec()` to retrieve the full column specification for this data.
-ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 2,917 × 49
-   tourney_id tourney_name surface draw_size tourney_level tourney_date
-   &lt;chr&gt;      &lt;chr&gt;        &lt;chr&gt;       &lt;dbl&gt; &lt;chr&gt;                &lt;dbl&gt;
- 1 2022-8888  Atp Cup      Hard           16 A                 20220103
- 2 2022-8888  Atp Cup      Hard           16 A                 20220103
- 3 2022-8888  Atp Cup      Hard           16 A                 20220103
- 4 2022-8888  Atp Cup      Hard           16 A                 20220103
- 5 2022-8888  Atp Cup      Hard           16 A                 20220103
- 6 2022-8888  Atp Cup      Hard           16 A                 20220103
- 7 2022-8888  Atp Cup      Hard           16 A                 20220103
- 8 2022-8888  Atp Cup      Hard           16 A                 20220103
- 9 2022-8888  Atp Cup      Hard           16 A                 20220103
-10 2022-8888  Atp Cup      Hard           16 A                 20220103
-# ℹ 2,907 more rows
-# ℹ 43 more variables: match_num &lt;dbl&gt;, winner_id &lt;dbl&gt;, winner_seed &lt;dbl&gt;,
-#   winner_entry &lt;chr&gt;, winner_name &lt;chr&gt;, winner_hand &lt;chr&gt;, winner_ht &lt;dbl&gt;,
-#   winner_ioc &lt;chr&gt;, winner_age &lt;dbl&gt;, loser_id &lt;dbl&gt;, loser_seed &lt;dbl&gt;,
-#   loser_entry &lt;chr&gt;, loser_name &lt;chr&gt;, loser_hand &lt;chr&gt;, loser_ht &lt;dbl&gt;,
-#   loser_ioc &lt;chr&gt;, loser_age &lt;dbl&gt;, score &lt;chr&gt;, best_of &lt;dbl&gt;, round &lt;chr&gt;,
-#   minutes &lt;dbl&gt;, w_ace &lt;dbl&gt;, w_df &lt;dbl&gt;, w_svpt &lt;dbl&gt;, w_1stIn &lt;dbl&gt;, …</code></pre>
-</div>
-<details class="code-fold">
-<summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read_csv</span>(<span class="st">"atp_matches_2023.csv"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-<div class="cell-output cell-output-stderr">
-<pre><code>Rows: 2986 Columns: 49
-── Column specification ────────────────────────────────────────────────────────
-Delimiter: ","
-chr (14): tourney_id, tourney_name, surface, tourney_level, winner_entry, wi...
-dbl (35): draw_size, tourney_date, match_num, winner_id, winner_seed, winner...
-
-ℹ Use `spec()` to retrieve the full column specification for this data.
-ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 2,986 × 49
-   tourney_id tourney_name surface draw_size tourney_level tourney_date
-   &lt;chr&gt;      &lt;chr&gt;        &lt;chr&gt;       &lt;dbl&gt; &lt;chr&gt;                &lt;dbl&gt;
- 1 2023-9900  United Cup   Hard           18 A                 20230102
- 2 2023-9900  United Cup   Hard           18 A                 20230102
- 3 2023-9900  United Cup   Hard           18 A                 20230102
- 4 2023-9900  United Cup   Hard           18 A                 20230102
- 5 2023-9900  United Cup   Hard           18 A                 20230102
- 6 2023-9900  United Cup   Hard           18 A                 20230102
- 7 2023-9900  United Cup   Hard           18 A                 20230102
- 8 2023-9900  United Cup   Hard           18 A                 20230102
- 9 2023-9900  United Cup   Hard           18 A                 20230102
-10 2023-9900  United Cup   Hard           18 A                 20230102
-# ℹ 2,976 more rows
-# ℹ 43 more variables: match_num &lt;dbl&gt;, winner_id &lt;dbl&gt;, winner_seed &lt;dbl&gt;,
-#   winner_entry &lt;chr&gt;, winner_name &lt;chr&gt;, winner_hand &lt;chr&gt;, winner_ht &lt;dbl&gt;,
-#   winner_ioc &lt;chr&gt;, winner_age &lt;dbl&gt;, loser_id &lt;dbl&gt;, loser_seed &lt;dbl&gt;,
-#   loser_entry &lt;chr&gt;, loser_name &lt;chr&gt;, loser_hand &lt;chr&gt;, loser_ht &lt;dbl&gt;,
-#   loser_ioc &lt;chr&gt;, loser_age &lt;dbl&gt;, score &lt;chr&gt;, best_of &lt;dbl&gt;, round &lt;chr&gt;,
-#   minutes &lt;dbl&gt;, w_ace &lt;dbl&gt;, w_df &lt;dbl&gt;, w_svpt &lt;dbl&gt;, w_1stIn &lt;dbl&gt;, …</code></pre>
-</div>
-<details class="code-fold">
-<summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read_csv</span>(<span class="st">"atp_matches_2024.csv"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-<div class="cell-output cell-output-stderr">
-<pre><code>Rows: 3076 Columns: 49
-── Column specification ────────────────────────────────────────────────────────
-Delimiter: ","
-chr (14): tourney_id, tourney_name, surface, tourney_level, winner_entry, wi...
-dbl (35): draw_size, tourney_date, match_num, winner_id, winner_seed, winner...
-
-ℹ Use `spec()` to retrieve the full column specification for this data.
-ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 3,076 × 49
-   tourney_id tourney_name surface draw_size tourney_level tourney_date
-   &lt;chr&gt;      &lt;chr&gt;        &lt;chr&gt;       &lt;dbl&gt; &lt;chr&gt;                &lt;dbl&gt;
- 1 2024-0339  Brisbane     Hard           32 A                 20240101
- 2 2024-0339  Brisbane     Hard           32 A                 20240101
- 3 2024-0339  Brisbane     Hard           32 A                 20240101
- 4 2024-0339  Brisbane     Hard           32 A                 20240101
- 5 2024-0339  Brisbane     Hard           32 A                 20240101
- 6 2024-0339  Brisbane     Hard           32 A                 20240101
- 7 2024-0339  Brisbane     Hard           32 A                 20240101
- 8 2024-0339  Brisbane     Hard           32 A                 20240101
- 9 2024-0339  Brisbane     Hard           32 A                 20240101
-10 2024-0339  Brisbane     Hard           32 A                 20240101
-# ℹ 3,066 more rows
-# ℹ 43 more variables: match_num &lt;dbl&gt;, winner_id &lt;dbl&gt;, winner_seed &lt;dbl&gt;,
-#   winner_entry &lt;chr&gt;, winner_name &lt;chr&gt;, winner_hand &lt;chr&gt;, winner_ht &lt;dbl&gt;,
-#   winner_ioc &lt;chr&gt;, winner_age &lt;dbl&gt;, loser_id &lt;dbl&gt;, loser_seed &lt;dbl&gt;,
-#   loser_entry &lt;chr&gt;, loser_name &lt;chr&gt;, loser_hand &lt;chr&gt;, loser_ht &lt;dbl&gt;,
-#   loser_ioc &lt;chr&gt;, loser_age &lt;dbl&gt;, score &lt;chr&gt;, best_of &lt;dbl&gt;, round &lt;chr&gt;,
-#   minutes &lt;dbl&gt;, w_ace &lt;dbl&gt;, w_df &lt;dbl&gt;, w_svpt &lt;dbl&gt;, w_1stIn &lt;dbl&gt;, …</code></pre>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
 </div>
 </div>
+</div>
+<p>Because court surface plays a major role in overall tennis performance, it is important to be able to play at a high level on clay, grass and hard courts. While Sinner dominates the hard court, Alcaraz’s ability to perform well on all three shows his versatile, adaptable style of play.</p>
+<p>This explains why Alcaraz already holds a career Grand Slam — the achievement of winning all four major championships — at just the age of 22. The U.S. Open and Australian Open are played on hard court, Wimbledon on grass and the French Open on clay. Sinner is only one away, having never won the French Open, from reaching his career Grand Slam. Alcaraz’s court versatility, without a doubt, lead to this achievement at the youngest age in history.</p>
+<p>Now, let’s look at another important part to a tennis player’s success: the serve.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>all_matches <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">read_csv</span>(<span class="st">"atp_matches_2020.csv"</span>),</span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">read_csv</span>(<span class="st">"atp_matches_2021.csv"</span>),</span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">read_csv</span>(<span class="st">"atp_matches_2022.csv"</span>),</span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">read_csv</span>(<span class="st">"atp_matches_2023.csv"</span>),</span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">read_csv</span>(<span class="st">"atp_matches_2024.csv"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-<div class="cell-output cell-output-stderr">
-<pre><code>Rows: 1462 Columns: 49
-── Column specification ────────────────────────────────────────────────────────
-Delimiter: ","
-chr (14): tourney_id, tourney_name, surface, tourney_level, winner_entry, wi...
-dbl (35): draw_size, tourney_date, match_num, winner_id, winner_seed, winner...
-
-ℹ Use `spec()` to retrieve the full column specification for this data.
-ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
-Rows: 2733 Columns: 49
-── Column specification ────────────────────────────────────────────────────────
-Delimiter: ","
-chr (14): tourney_id, tourney_name, surface, tourney_level, winner_entry, wi...
-dbl (35): draw_size, tourney_date, match_num, winner_id, winner_seed, winner...
-
-ℹ Use `spec()` to retrieve the full column specification for this data.
-ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
-Rows: 2917 Columns: 49
-── Column specification ────────────────────────────────────────────────────────
-Delimiter: ","
-chr (14): tourney_id, tourney_name, surface, tourney_level, winner_entry, wi...
-dbl (35): draw_size, tourney_date, match_num, winner_id, winner_seed, winner...
-
-ℹ Use `spec()` to retrieve the full column specification for this data.
-ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
-Rows: 2986 Columns: 49
-── Column specification ────────────────────────────────────────────────────────
-Delimiter: ","
-chr (14): tourney_id, tourney_name, surface, tourney_level, winner_entry, wi...
-dbl (35): draw_size, tourney_date, match_num, winner_id, winner_seed, winner...
-
-ℹ Use `spec()` to retrieve the full column specification for this data.
-ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
-Rows: 3076 Columns: 49
-── Column specification ────────────────────────────────────────────────────────
-Delimiter: ","
-chr (14): tourney_id, tourney_name, surface, tourney_level, winner_entry, wi...
-dbl (35): draw_size, tourney_date, match_num, winner_id, winner_seed, winner...
-
-ℹ Use `spec()` to retrieve the full column specification for this data.
-ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-</div>
-<details class="code-fold">
-<summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>players <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Carlos Alcaraz"</span>, <span class="st">"Jannik Sinner"</span>)</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>rank_tiers <span class="ot">&lt;-</span> all_matches <span class="sc">%&gt;%</span></span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(winner_name <span class="sc">%in%</span> players <span class="sc">|</span> loser_name <span class="sc">%in%</span> players) <span class="sc">%&gt;%</span></span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">player =</span> <span class="fu">case_when</span>(</span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>    winner_name <span class="sc">%in%</span> players <span class="sc">~</span> winner_name,</span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>    loser_name <span class="sc">%in%</span> players <span class="sc">~</span> loser_name</span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>  ),</span>
-<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">opponent_rank =</span> <span class="fu">case_when</span>(</span>
-<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>    winner_name <span class="sc">==</span> player <span class="sc">~</span> loser_rank,</span>
-<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>    loser_name <span class="sc">==</span> player <span class="sc">~</span> winner_rank</span>
-<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>  ),</span>
-<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">win =</span> <span class="fu">ifelse</span>(winner_name <span class="sc">==</span> player, <span class="dv">1</span>, <span class="dv">0</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(opponent_rank)) <span class="sc">%&gt;%</span></span>
-<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">rank_group =</span> <span class="fu">case_when</span>(</span>
-<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>    opponent_rank <span class="sc">&lt;=</span> <span class="dv">10</span> <span class="sc">~</span> <span class="st">"Top 10"</span>,</span>
-<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>    opponent_rank <span class="sc">&lt;=</span> <span class="dv">20</span> <span class="sc">~</span> <span class="st">"11–20"</span>,</span>
-<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>    opponent_rank <span class="sc">&lt;=</span> <span class="dv">50</span> <span class="sc">~</span> <span class="st">"21–50"</span>,</span>
-<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>    <span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">"50+"</span></span>
-<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a>  )) <span class="sc">%&gt;%</span></span>
-<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(player, rank_group) <span class="sc">%&gt;%</span></span>
-<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">win_pct =</span> <span class="fu">mean</span>(win), <span class="at">.groups =</span> <span class="st">"drop"</span>)</span>
-<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(rank_tiers, <span class="fu">aes</span>(<span class="at">x =</span> rank_group, <span class="at">y =</span> win_pct, <span class="at">fill =</span> player)) <span class="sc">+</span></span>
-<span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">position =</span> <span class="st">"dodge"</span>) <span class="sc">+</span></span>
-<span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb20-30"><a href="#cb20-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(</span>
-<span id="cb20-31"><a href="#cb20-31" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Carlos Alcaraz"</span> <span class="ot">=</span> <span class="st">"#EEDC82"</span>,</span>
-<span id="cb20-32"><a href="#cb20-32" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Jannik Sinner"</span> <span class="ot">=</span> <span class="st">"#4F7942"</span></span>
-<span id="cb20-33"><a href="#cb20-33" aria-hidden="true" tabindex="-1"></a>  )) <span class="sc">+</span></span>
-<span id="cb20-34"><a href="#cb20-34" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb20-35"><a href="#cb20-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">percent_format</span>()) <span class="sc">+</span></span>
-<span id="cb20-36"><a href="#cb20-36" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb20-37"><a href="#cb20-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb20-38"><a href="#cb20-38" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Performance by Opponent Ranking Tier"</span>,</span>
-<span id="cb20-39"><a href="#cb20-39" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"How each player performs as competition level changes"</span>,</span>
-<span id="cb20-40"><a href="#cb20-40" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Opponent Ranking Tier"</span>,</span>
-<span id="cb20-41"><a href="#cb20-41" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Win Percentage"</span></span>
-<span id="cb20-42"><a href="#cb20-42" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb20-43"><a href="#cb20-43" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb20-44"><a href="#cb20-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>serve_stack <span class="ot">&lt;-</span> all_matches <span class="sc">|&gt;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(winner_name <span class="sc">%in%</span> players) <span class="sc">|&gt;</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(<span class="at">player =</span> winner_name) <span class="sc">|&gt;</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">aces =</span> <span class="fu">sum</span>(w_ace, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">double_faults =</span> <span class="fu">sum</span>(w_df, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">first_in =</span> <span class="fu">sum</span>(w_1stIn, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">first_won =</span> <span class="fu">sum</span>(w_1stWon, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">second_won =</span> <span class="fu">sum</span>(w_2ndWon, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">serve_points =</span> <span class="fu">sum</span>(w_svpt, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">first_lost =</span> first_in <span class="sc">-</span> first_won,</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">second_in =</span> serve_points <span class="sc">-</span> first_in,</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">second_lost =</span> second_in <span class="sc">-</span> second_won</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">ace_rate =</span> aces <span class="sc">/</span> serve_points,</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">df_rate =</span> double_faults <span class="sc">/</span> serve_points,</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">first_won_rate =</span> first_won <span class="sc">/</span> serve_points,</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">first_lost_rate =</span> first_lost <span class="sc">/</span> serve_points,</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">second_won_rate =</span> second_won <span class="sc">/</span> serve_points,</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">second_lost_rate =</span> second_lost <span class="sc">/</span> serve_points</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(player,</span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>         ace_rate,</span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>         df_rate,</span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>         first_won_rate,</span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>         first_lost_rate,</span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>         second_won_rate,</span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>         second_lost_rate) <span class="sc">|&gt;</span></span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="sc">-</span>player, <span class="at">names_to =</span> <span class="st">"stat"</span>, <span class="at">values_to =</span> <span class="st">"value"</span>)</span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(serve_stack, <span class="fu">aes</span>(<span class="at">x =</span> player, <span class="at">y =</span> value, <span class="at">fill =</span> stat)) <span class="sc">+</span></span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(</span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>    <span class="at">values =</span> <span class="fu">c</span>(</span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>      <span class="st">"ace_rate"</span> <span class="ot">=</span> <span class="st">"#2ca02c"</span>,</span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>      <span class="st">"df_rate"</span> <span class="ot">=</span> <span class="st">"#d62728"</span>,</span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>      <span class="st">"first_won_rate"</span> <span class="ot">=</span> <span class="st">"#0047AB"</span>,</span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>      <span class="st">"first_lost_rate"</span> <span class="ot">=</span> <span class="st">"#6495ED"</span>,</span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a>      <span class="st">"second_won_rate"</span> <span class="ot">=</span> <span class="st">"#9F2B68"</span>,</span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a>      <span class="st">"second_lost_rate"</span> <span class="ot">=</span> <span class="st">"#E37383"</span></span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a>    <span class="at">labels =</span> <span class="fu">c</span>(</span>
+<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a>      <span class="st">"ace_rate"</span> <span class="ot">=</span> <span class="st">"Ace"</span>,</span>
+<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a>      <span class="st">"df_rate"</span> <span class="ot">=</span> <span class="st">"Double Fault"</span>,</span>
+<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a>      <span class="st">"first_won_rate"</span> <span class="ot">=</span> <span class="st">"1st Serve Win"</span>,</span>
+<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a>      <span class="st">"first_lost_rate"</span> <span class="ot">=</span> <span class="st">"1st Serve Lost"</span>,</span>
+<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a>      <span class="st">"second_won_rate"</span> <span class="ot">=</span> <span class="st">"2nd Serve Win"</span>,</span>
+<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a>      <span class="st">"second_lost_rate"</span> <span class="ot">=</span> <span class="st">"2nd Serve Lost"</span></span>
+<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">percent_format</span>()) <span class="sc">+</span></span>
+<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb3-66"><a href="#cb3-66" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Sinner Uses a Serve Strategically"</span>,</span>
+<span id="cb3-67"><a href="#cb3-67" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Comparing how Alcaraz and Sinner construct points on serve"</span>,</span>
+<span id="cb3-68"><a href="#cb3-68" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">"Source: JeffSackmann | By Sydney Schmitz"</span>,</span>
+<span id="cb3-69"><a href="#cb3-69" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Player"</span>,</span>
+<span id="cb3-70"><a href="#cb3-70" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Percentage of Serve Points"</span>,</span>
+<span id="cb3-71"><a href="#cb3-71" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"Serve Outcome"</span></span>
+<span id="cb3-72"><a href="#cb3-72" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb3-73"><a href="#cb3-73" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-74"><a href="#cb3-74" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb3-75"><a href="#cb3-75" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb3-76"><a href="#cb3-76" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">size =</span> <span class="dv">14</span>)</span>
+<span id="cb3-77"><a href="#cb3-77" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -677,142 +588,14 @@ dbl (35): draw_size, tourney_date, match_num, winner_id, winner_seed, winner...
 </div>
 </div>
 </div>
-<p>Matches against top 50 opponents reveal how players perform at the highest level at a more consistent level. Here, Sinner seems to be the one with a stronger ability to compete against the current best.</p>
-<p>Professional tennis is a unique sport in that it’s not played on a standard type of court surface. Yes, MLB stadiums have differing outfield fence dimensions and soccer pitches allow for a range of lengths, but nothing allows for the smallest of action to make the biggest of impact like the type of court surface a tennis match is being played on.</p>
-<p>Let’s see, between Sinner and Alcaraz, who is the best across the three surface types.</p>
-<p>Because court surface plays a major role in overall tennis performance</p>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lubridate)</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>rank_data <span class="ot">&lt;-</span> all_matches <span class="sc">%&gt;%</span></span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(winner_name <span class="sc">%in%</span> players <span class="sc">|</span> loser_name <span class="sc">%in%</span> players) <span class="sc">%&gt;%</span></span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">player =</span> <span class="fu">case_when</span>(</span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>    winner_name <span class="sc">%in%</span> players <span class="sc">~</span> winner_name,</span>
-<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>    loser_name <span class="sc">%in%</span> players <span class="sc">~</span> loser_name</span>
-<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>  ),</span>
-<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">player_rank =</span> <span class="fu">case_when</span>(</span>
-<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>    winner_name <span class="sc">==</span> player <span class="sc">~</span> winner_rank,</span>
-<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>    loser_name <span class="sc">==</span> player <span class="sc">~</span> loser_rank</span>
-<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>  ),</span>
-<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">year =</span> <span class="fu">year</span>(<span class="fu">ymd</span>(tourney_date))) <span class="sc">%&gt;%</span></span>
-<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(player_rank)) <span class="sc">%&gt;%</span></span>
-<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(player, year) <span class="sc">%&gt;%</span></span>
-<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">avg_rank =</span> <span class="fu">mean</span>(player_rank, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">.groups =</span> <span class="st">"drop"</span>)</span>
-<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(rank_data, <span class="fu">aes</span>(<span class="at">x =</span> year, <span class="at">y =</span> avg_rank, <span class="at">color =</span> player)) <span class="sc">+</span></span>
-<span id="cb21-24"><a href="#cb21-24" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb21-25"><a href="#cb21-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_step</span>(<span class="at">size =</span> <span class="fl">1.2</span>) <span class="sc">+</span></span>
-<span id="cb21-26"><a href="#cb21-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
-<span id="cb21-27"><a href="#cb21-27" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb21-28"><a href="#cb21-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(</span>
-<span id="cb21-29"><a href="#cb21-29" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Carlos Alcaraz"</span> <span class="ot">=</span> <span class="st">"#EEDC82"</span>,</span>
-<span id="cb21-30"><a href="#cb21-30" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Jannik Sinner"</span> <span class="ot">=</span> <span class="st">"#4F7942"</span></span>
-<span id="cb21-31"><a href="#cb21-31" aria-hidden="true" tabindex="-1"></a>  )) <span class="sc">+</span></span>
-<span id="cb21-32"><a href="#cb21-32" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb21-33"><a href="#cb21-33" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Flip axis so rank 1 is at top</span></span>
-<span id="cb21-34"><a href="#cb21-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_reverse</span>() <span class="sc">+</span></span>
-<span id="cb21-35"><a href="#cb21-35" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb21-36"><a href="#cb21-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb21-37"><a href="#cb21-37" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"ATP Ranking Progression (2020–2024)"</span>,</span>
-<span id="cb21-38"><a href="#cb21-38" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Tracking the rise of Alcaraz and Sinner"</span>,</span>
-<span id="cb21-39"><a href="#cb21-39" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Year"</span>,</span>
-<span id="cb21-40"><a href="#cb21-40" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Average Ranking"</span></span>
-<span id="cb21-41"><a href="#cb21-41" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb21-42"><a href="#cb21-42" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb21-43"><a href="#cb21-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb21-44"><a href="#cb21-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
-<span id="cb21-45"><a href="#cb21-45" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">size =</span> <span class="dv">14</span>),</span>
-<span id="cb21-46"><a href="#cb21-46" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.title =</span> <span class="fu">element_blank</span>()</span>
-<span id="cb21-47"><a href="#cb21-47" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
-ℹ Please use `linewidth` instead.</code></pre>
-</div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>bubble_data <span class="ot">&lt;-</span> all_matches <span class="sc">%&gt;%</span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(winner_name <span class="sc">%in%</span> players <span class="sc">|</span> loser_name <span class="sc">%in%</span> players) <span class="sc">%&gt;%</span></span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">player =</span> <span class="fu">case_when</span>(</span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>    winner_name <span class="sc">%in%</span> players <span class="sc">~</span> winner_name,</span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>    loser_name <span class="sc">%in%</span> players <span class="sc">~</span> loser_name</span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>  ),</span>
-<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">opponent_rank =</span> <span class="fu">case_when</span>(</span>
-<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>    winner_name <span class="sc">==</span> player <span class="sc">~</span> loser_rank,</span>
-<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>    loser_name <span class="sc">==</span> player <span class="sc">~</span> winner_rank</span>
-<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>  ),</span>
-<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">win =</span> <span class="fu">ifelse</span>(winner_name <span class="sc">==</span> player, <span class="dv">1</span>, <span class="dv">0</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(opponent_rank)) <span class="sc">%&gt;%</span></span>
-<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">rank_group =</span> <span class="fu">case_when</span>(</span>
-<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a>    opponent_rank <span class="sc">&lt;=</span> <span class="dv">10</span> <span class="sc">~</span> <span class="st">"Top 10"</span>,</span>
-<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a>    opponent_rank <span class="sc">&lt;=</span> <span class="dv">20</span> <span class="sc">~</span> <span class="st">"11–20"</span>,</span>
-<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a>    opponent_rank <span class="sc">&lt;=</span> <span class="dv">50</span> <span class="sc">~</span> <span class="st">"21–50"</span>,</span>
-<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a>    <span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">"50+"</span></span>
-<span id="cb23-23"><a href="#cb23-23" aria-hidden="true" tabindex="-1"></a>  )) <span class="sc">%&gt;%</span></span>
-<span id="cb23-24"><a href="#cb23-24" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb23-25"><a href="#cb23-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(player, rank_group) <span class="sc">%&gt;%</span></span>
-<span id="cb23-26"><a href="#cb23-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb23-27"><a href="#cb23-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">win_pct =</span> <span class="fu">mean</span>(win),</span>
-<span id="cb23-28"><a href="#cb23-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">matches =</span> <span class="fu">n</span>(),</span>
-<span id="cb23-29"><a href="#cb23-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
-<span id="cb23-30"><a href="#cb23-30" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb23-31"><a href="#cb23-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-32"><a href="#cb23-32" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(bubble_data, <span class="fu">aes</span>(<span class="at">x =</span> rank_group, <span class="at">y =</span> win_pct, <span class="at">size =</span> matches, <span class="at">color =</span> player)) <span class="sc">+</span></span>
-<span id="cb23-33"><a href="#cb23-33" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb23-34"><a href="#cb23-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
-<span id="cb23-35"><a href="#cb23-35" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb23-36"><a href="#cb23-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_size</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">12</span>)) <span class="sc">+</span></span>
-<span id="cb23-37"><a href="#cb23-37" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb23-38"><a href="#cb23-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(</span>
-<span id="cb23-39"><a href="#cb23-39" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Carlos Alcaraz"</span> <span class="ot">=</span> <span class="st">"#EEDC82"</span>,</span>
-<span id="cb23-40"><a href="#cb23-40" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Jannik Sinner"</span> <span class="ot">=</span> <span class="st">"#4F7942"</span></span>
-<span id="cb23-41"><a href="#cb23-41" aria-hidden="true" tabindex="-1"></a>  )) <span class="sc">+</span></span>
-<span id="cb23-42"><a href="#cb23-42" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb23-43"><a href="#cb23-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">percent_format</span>()) <span class="sc">+</span></span>
-<span id="cb23-44"><a href="#cb23-44" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb23-45"><a href="#cb23-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb23-46"><a href="#cb23-46" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Performance vs Competition Level"</span>,</span>
-<span id="cb23-47"><a href="#cb23-47" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Win percentage, opponent strength, and match volume"</span>,</span>
-<span id="cb23-48"><a href="#cb23-48" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Opponent Ranking Tier"</span>,</span>
-<span id="cb23-49"><a href="#cb23-49" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Win Percentage"</span>,</span>
-<span id="cb23-50"><a href="#cb23-50" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="st">"Matches Played"</span></span>
-<span id="cb23-51"><a href="#cb23-51" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb23-52"><a href="#cb23-52" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb23-53"><a href="#cb23-53" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb23-54"><a href="#cb23-54" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
-<span id="cb23-55"><a href="#cb23-55" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">size =</span> <span class="dv">14</span>),</span>
-<span id="cb23-56"><a href="#cb23-56" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.title =</span> <span class="fu">element_blank</span>()</span>
-<span id="cb23-57"><a href="#cb23-57" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
+<p>This chart shows a full breakdown of serve outcomes, accounting for every serve point from Alcaraz and Sinner. Highlighting not only how they win points, but where they lose them, we can relate this to their serving efficiency.</p>
+<p>While their double fault percentage is similar, Sinner has the edge on aces. This is interesting, considering Alcaraz is known for consistently producing first serves at a speed of 130+ mph. With a larger percentage of aces, Sinner relies on spin and hitting angles on his serve to make it so difficult for opponents to return the ball in.</p>
+<p>Sinner also has the greater ability to win points off of a typically weaker second serve, again showing how there are more important things than service speed and power. Through the pink sections, we see he does go to a second serve at a higher rate than Alcaraz, but is still able to convert points fairly well.</p>
+<p>So who is the more complete player? It is difficult to determine.</p>
+<p>Clearly, Carlos Alcaraz and Jannik Sinner are elite players and their rivalry is dominating the ATP. However, when combining all three areas — performance against top competition, surface versatility and serve effectiveness — one player emerges as slightly more complete:</p>
+<p>Carlos Alcaraz.</p>
+<p>That said, the margin is so small and Sinner’s strengths make sure that this rivalry is far from one-sided.</p>
+<p>If their current trajectory means anything, these two will continue to dominate the ATP, and it will be interesting to clearly settle this debate when their careers come to a close.</p>
 
 
 
